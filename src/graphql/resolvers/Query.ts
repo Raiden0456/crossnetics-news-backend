@@ -1,10 +1,11 @@
-import { books } from '../../models/Book.js';
+
 import { mockQueryResult } from '../../models/Post.js';
+import { mockBlogResult } from '../../models/Blog.js';
 
 const queryResolvers = {
   Query: {
-    books: () => books,
     getArticles: () => mockQueryResult,
+    getNews: () => mockBlogResult,
   },
 
 };

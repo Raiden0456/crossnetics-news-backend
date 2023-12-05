@@ -1,6 +1,6 @@
-import bookTypeDefs from './BookTypeDefs.js';
+import blogTypeDefs from './BlogTypeDefs.js';
 import PostTypeDefs from './PostTypeDefs.js';
 
-const typeDefs = [bookTypeDefs, PostTypeDefs];
+const typeDefs = [blogTypeDefs, PostTypeDefs];
 
 export default typeDefs;
