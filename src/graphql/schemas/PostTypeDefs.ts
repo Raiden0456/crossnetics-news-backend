@@ -18,6 +18,7 @@ type Description {
   author: String
   tags: [String]
   date: String
+  likes: Int
 }
 
 type QueryResult {
