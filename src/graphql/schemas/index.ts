@@ -1,5 +1,6 @@
-import PostTypeDefs from './PostTypeDefs.js';
+import PostTypeDefs from './PostTypeDefs.js'
+import UserTypeDefs from './UserTypeDefs.js'
 
-const typeDefs = [PostTypeDefs];
+const typeDefs = [PostTypeDefs, UserTypeDefs]
 
-export default typeDefs;
+export default typeDefs
