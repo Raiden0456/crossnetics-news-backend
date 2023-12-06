@@ -1,33 +1,35 @@
 const PostTypeDefs = `#graphql
 
 type Image {
-  url: String
+  url: String!
   copyright: String
 }
 
-type Article {
-  id: String
-  titleType: Boolean
-  title: String
+type ArticleBlock {
+  id: ID!
+  titleType: Boolean!
+  title: String!
   text: String
 }
 
 type Description {
   image: Image
-  title: String
+  title: String!
   author: String
   tags: [String]
-  date: String
+  date: String!
   likes: Int
 }
 
-type QueryResult {
-  description: Description
-  content: [Article]
+type Article {
+  id: ID!
+  articleType: String!
+  description: Description!
+  content: [ArticleBlock]!
 }
 
 type Query {
-  getArticles: QueryResult
+  getArticles: [Article]
 }
 `;
 

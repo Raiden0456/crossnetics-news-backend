@@ -10,18 +10,18 @@ const mockImages = [
   // ... add more if needed
 ];
 
-const mockArticles = [
+const mockArticlesBlocks = [
   {
-    id: "article1",
+    id: "block1",
     titleType: true,
-    title: "First Article",
-    text: "This is the first article text.",
+    title: "First Article Block",
+    text: "This is the first article Block text.",
   },
   {
-    id: "article2",
+    id: "block2",
     titleType: false,
-    title: "Second Article",
-    text: "This is the second article text.",
+    title: "Second Article Block",
+    text: "This is the second article Block text.",
   }
   // ... add more if needed
 ];
@@ -31,10 +31,17 @@ const mockDescription = {
   title: "News Update",
   author: "Author Name",
   tags: ["news", "update", "latest"],
-  date: "2023-12-01"
+  date: "2023-12-01",
+  likes: 100
 };
 
-export const mockQueryResult = {
+const mockArticle = {
+  id: "article1",
+  articleType: "blog",
   description: mockDescription,
-  content: mockArticles
+  content: mockArticlesBlocks
+};
+
+export const mockArticles = {
+  articles: [mockArticle, mockArticle, mockArticle]
 };
