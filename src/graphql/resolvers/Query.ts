@@ -1,56 +1,69 @@
+import jwt from 'jsonwebtoken';
 import { GraphQLError } from 'graphql'
 
-// Mock imports
-import { mockArticles } from '../../models/Post.js'
-import { mockUsers } from '../../models/Users.js'
+// Load environment variables
+import dotenv from 'dotenv'
+dotenv.config()
+//** **//
+
+// Mongo models
+import PostModel from '../../models/Post.js'
+import UserModel from '../../models/User.js'
+//** **//
+
+// Mock models
+// import { mockPosts } from '../../models/_mockModelPost.js'
+// import { mockUsers } from '../../models/_mockModelUsers.js'
 //** **//
 
 const queryResolvers = {
   Query: {
-    getArticles: () => {
-      const articles = mockArticles.articles
-      // Error handling
-      if (!articles || articles.length === 0) {
-        throw new GraphQLError('No articles found!', {
+    getPosts: async () => {
+      const posts = await PostModel.find({})
+      if (!posts || posts.length === 0) {
+        throw new GraphQLError('No posts found!', {
           extensions: {
             code: 'NOT_FOUND',
           },
         })
       }
-
-      return articles
+      return posts
     },
 
-    getArticle: (_, { id }) => {
-      const article = mockArticles.articles.find(article => article.id === id)
-
-      // Error handling
-      if (!article) {
-        throw new GraphQLError(`Article with id: ${id} not found!`, {
+    getPost: async (_, { id }) => {
+      const post = await PostModel.findById(id)
+      if (!post) {
+        throw new GraphQLError(`Post with id: ${id} not found!`, {
           extensions: {
             code: 'NOT_FOUND',
           },
         })
       }
-
-      return article
+      return post
     },
-    
-    login: (_, { login, password }) => {
-      const user = mockUsers.users.find(user => user.login === login)
+
+    login: async (_, { login, password }) => {
+      const user = await UserModel.findOne({ login }).exec() // Optional .exec() to get a true Promise
       if (!user) {
-        throw new GraphQLError('Incorrect login, please try again', {
-          extensions: { code: 'INCORRECT_LOGIN' },
+        throw new GraphQLError('Incorrect login or password, please try again', {
+          extensions: { code: 'INCORRECT_CREDENTIALS' },
         })
       }
-      if (user.password !== password) {
-        throw new GraphQLError('Incorrect password, please try again', {
-          extensions: { code: 'INCORRECT_PASSWORD' },
+
+      // Here, compare the password properly using bcrypt for stored hashed passwords
+      const validPassword = await user.comparePassword(password)
+      if (!validPassword) {
+        throw new GraphQLError('Incorrect login or password, please try again', {
+          extensions: { code: 'INCORRECT_CREDENTIALS' },
         })
       }
-      return user
+
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+        expiresIn: '1h', // Token expires in 1 hour
+      });
+
+      return { user, token };
     },
-    
   },
 }
 

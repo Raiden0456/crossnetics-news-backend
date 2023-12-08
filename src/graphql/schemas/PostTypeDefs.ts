@@ -6,7 +6,7 @@ const PostTypeDefs = `#graphql
     copyright: String
   }
 
-  type ArticleBlock {
+  type PostBlock {
     id: ID!
     titleType: Boolean!
     title: String!
@@ -22,25 +22,24 @@ const PostTypeDefs = `#graphql
     likes: Int
   }
 
-  type Article {
+  type Post {
     id: ID!
-    articleType: String!
+    postType: String!
     description: Description!
-    content: [ArticleBlock]!
+    content: [PostBlock]!
   }
 
   type Query {
-    getArticles: [Article],
-    getArticle(id: ID!): Article
+    getPosts: [Post],
+    getPost(id: ID!): Post
   }
 
   # Mutations
 
-  input ArticleInput {
-    id: ID!
-    articleType: String!
+  input PostInput {
+    postType: String!
     description: DescriptionInput!
-    content: [ArticleBlockInput]!
+    content: [PostBlockInput]!
   }
 
   input DescriptionInput {
@@ -52,8 +51,7 @@ const PostTypeDefs = `#graphql
     likes: Int
   }
 
-  input ArticleBlockInput {
-    id: ID!
+  input PostBlockInput {
     titleType: Boolean!
     title: String!
     text: String
@@ -65,9 +63,9 @@ const PostTypeDefs = `#graphql
   }
 
   type Mutation {
-    addArticle(article: ArticleInput!): Article
-    deleteArticle(id: ID!): ID
-    editArticle(id: ID!, article: ArticleInput!): Article
+    addPost(post: PostInput!): Post
+    deletePost(id: ID!): ID
+    editPost(id: ID!, post: PostInput!): Post
   }
 `
 

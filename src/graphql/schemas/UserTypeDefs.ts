@@ -8,6 +8,12 @@ type User {
 type Query {
     login(login: String!, password: String!): User
 }
+
+type Mutation {
+  addUser(login: String!, password: String!): User
+  deleteUser(id: ID!): ID
+}
+
 `
 
 export default UserTypeDefs
