@@ -12,7 +12,17 @@ import UserModel from '../../models/User.js'
 const mutationResolvers = {
   Mutation: {
     // Add a new post
-    addPost: async (_, { post }) => {
+    addPost: async (_, { post }, context) => {
+
+      // Check if user is logged in
+      if (!context.user) {
+        throw new GraphQLError('Unauthorized access. Please login to continue.', {
+          extensions: {
+            code: 'UNAUTHENTICATED_ACCESS',
+          },
+        });
+      }
+
       try {
         // Create a new post using the Post model
         const newPost = new PostModel(post)
@@ -29,7 +39,17 @@ const mutationResolvers = {
     },
 
     // Delete a post by ID
-    deletePost: async (_, { id }) => {
+    deletePost: async (_, { id }, context) => {
+
+      // Check if user is logged in
+      if (!context.user) {
+        throw new GraphQLError('Unauthorized access. Please login to continue.', {
+          extensions: {
+            code: 'UNAUTHENTICATED_ACCESS',
+          },
+        });
+      }
+
       try {
         // Find the post by id and delete it
         const deletedPost = await PostModel.findByIdAndDelete(id)
@@ -52,7 +72,17 @@ const mutationResolvers = {
     },
 
     // Edit a post by ID
-    editPost: async (_, { id, post }) => {
+    editPost: async (_, { id, post }, context) => {
+
+      // Check if user is logged in
+      if (!context.user) {
+        throw new GraphQLError('Unauthorized access. Please login to continue.', {
+          extensions: {
+            code: 'UNAUTHENTICATED_ACCESS',
+          },
+        });
+      }
+
       try {
         // Update the post with the provided id with new data
         const updatedPost = await PostModel.findByIdAndUpdate(id, post, {
@@ -78,7 +108,17 @@ const mutationResolvers = {
     },
 
     // Add a new user
-    addUser: async (_, { login, password }) => {
+    addUser: async (_, { login, password }, context) => {
+
+      // Check if user is logged in
+      if (!context.user) {
+        throw new GraphQLError('Unauthorized access. Please login to continue.', {
+          extensions: {
+            code: 'UNAUTHENTICATED_ACCESS',
+          },
+        });
+      }
+
       try {
         // Check if user already exists
         const existingUser = await UserModel.findOne({ login });
@@ -105,7 +145,17 @@ const mutationResolvers = {
     },
 
     // Delete a user by ID
-    deleteUser: async (_, { id }) => {
+    deleteUser: async (_, { id }, context) => {
+
+      // Check if user is logged in
+      if (!context.user) {
+        throw new GraphQLError('Unauthorized access. Please login to continue.', {
+          extensions: {
+            code: 'UNAUTHENTICATED_ACCESS',
+          },
+        });
+      }
+      
       try {
         // Find the user by ID and delete them
         const deletedUser = await UserModel.findByIdAndDelete(id);

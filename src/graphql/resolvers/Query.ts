@@ -43,26 +43,25 @@ const queryResolvers = {
     },
 
     login: async (_, { login, password }) => {
-      const user = await UserModel.findOne({ login }).exec() // Optional .exec() to get a true Promise
+      const user = await UserModel.findOne({ login }).exec();
       if (!user) {
-        throw new GraphQLError('Incorrect login or password, please try again', {
+        throw new GraphQLError('Incorrect login or password', {
           extensions: { code: 'INCORRECT_CREDENTIALS' },
-        })
+        });
       }
-
-      // Here, compare the password properly using bcrypt for stored hashed passwords
-      const validPassword = await user.comparePassword(password)
+    
+      const validPassword = await user.comparePassword(password);
       if (!validPassword) {
-        throw new GraphQLError('Incorrect login or password, please try again', {
+        throw new GraphQLError('Incorrect login or password', {
           extensions: { code: 'INCORRECT_CREDENTIALS' },
-        })
+        });
       }
-
+    
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-        expiresIn: '1h', // Token expires in 1 hour
+        expiresIn: '1h',
       });
-
-      return { user, token };
+    
+      return { user: { id: user.id, login: user.login }, token };
     },
   },
 }
