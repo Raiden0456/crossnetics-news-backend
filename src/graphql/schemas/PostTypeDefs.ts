@@ -20,6 +20,7 @@ const PostTypeDefs = `#graphql
     tags: [String]
     date: String!
     likes: Int
+    views: Int
   }
 
   type Post {
@@ -49,6 +50,7 @@ const PostTypeDefs = `#graphql
     tags: [String]
     date: String!
     likes: Int
+    views: Int
   }
 
   input PostBlockInput {

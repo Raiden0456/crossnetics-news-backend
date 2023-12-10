@@ -34,6 +34,7 @@ interface IDescription extends Document {
   tags?: string[]
   date: string
   likes?: number
+  views?: number
 }
 
 // Create Mongoose schema for Description
@@ -44,6 +45,7 @@ const DescriptionSchema = new Schema<IDescription>({
   tags: [String],
   date: { type: String, required: true },
   likes: Number,
+  views: Number,
 })
 
 // Define TypeScript interface for Post document structure
