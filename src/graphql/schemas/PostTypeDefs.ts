@@ -31,7 +31,7 @@ const PostTypeDefs = `#graphql
   }
 
   type Query {
-    getPosts: [Post],
+    getPosts(titleKeyword: String): [Post],
     getPost(id: ID!): Post
   }
 

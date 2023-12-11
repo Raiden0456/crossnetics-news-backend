@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'
 import { GraphQLError } from 'graphql'
 
 // Load environment variables
@@ -18,8 +18,13 @@ import UserModel from '../../models/User.js'
 
 const queryResolvers = {
   Query: {
-    getPosts: async () => {
-      const posts = await PostModel.find({})
+    getPosts: async (_, { titleKeyword }) => {
+      let query = {}
+      if (titleKeyword) {
+        query['description.title'] = { $regex: titleKeyword, $options: 'i' }
+      }
+
+      const posts = await PostModel.find(query)
       if (!posts || posts.length === 0) {
         throw new GraphQLError('No posts found!', {
           extensions: {
@@ -43,25 +48,25 @@ const queryResolvers = {
     },
 
     login: async (_, { login, password }) => {
-      const user = await UserModel.findOne({ login }).exec();
+      const user = await UserModel.findOne({ login }).exec()
       if (!user) {
         throw new GraphQLError('Incorrect login or password', {
           extensions: { code: 'INCORRECT_CREDENTIALS' },
-        });
+        })
       }
-    
-      const validPassword = await user.comparePassword(password);
+
+      const validPassword = await user.comparePassword(password)
       if (!validPassword) {
         throw new GraphQLError('Incorrect login or password', {
           extensions: { code: 'INCORRECT_CREDENTIALS' },
-        });
+        })
       }
-    
+
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
         expiresIn: '1h',
-      });
-    
-      return { user: { id: user.id, login: user.login }, token };
+      })
+
+      return { user: { id: user.id, login: user.login }, token }
     },
   },
 }
